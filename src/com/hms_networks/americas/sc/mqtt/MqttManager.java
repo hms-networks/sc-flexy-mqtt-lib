@@ -266,7 +266,7 @@ public abstract class MqttManager extends MqttClient {
    *
    * @param throwable exception to be handled
    */
-  abstract void onError(Throwable throwable);
+  public abstract void onError(Throwable throwable);
 
   /**
    * Abstract method to be implemented by the inheriting application for managing received MQTT
@@ -274,7 +274,7 @@ public abstract class MqttManager extends MqttClient {
    *
    * @param mqttMessage received MQTT message
    */
-  abstract void onMessage(MqttMessage mqttMessage);
+  public abstract void onMessage(MqttMessage mqttMessage);
 
   /**
    * Abstract method to be implemented by the inheriting application for processing or performing
@@ -282,7 +282,7 @@ public abstract class MqttManager extends MqttClient {
    *
    * @see #mqttThread
    */
-  abstract void runOnMqttLoop();
+  public abstract void runOnMqttLoop();
 
   /**
    * Abstract method to be implemented by the inheriting application for managing MQTT status
@@ -290,7 +290,7 @@ public abstract class MqttManager extends MqttClient {
    *
    * @param status MQTT status code
    */
-  abstract void onStatus(int status);
+  public abstract void onStatus(int status);
 
   /**
    * Method inherited from super class ({@link com.ewon.ewonitf.MqttClient}) for handling MQTT
