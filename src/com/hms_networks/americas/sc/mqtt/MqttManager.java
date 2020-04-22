@@ -293,6 +293,12 @@ public abstract class MqttManager extends MqttClient {
   public abstract void onStatus(int status);
 
   /**
+   * Abstract method to be implemented by the inheriting application for processing a successful
+   * MQTT connection.
+   */
+  public abstract void onConnect();
+
+  /**
    * Method inherited from super class ({@link com.ewon.ewonitf.MqttClient}) for handling MQTT
    * events. This method detects the event type and calls the appropriate method to handle it.
    *
@@ -302,7 +308,11 @@ public abstract class MqttManager extends MqttClient {
     // Handle MQTT status changes
     if (event == MQTT_STATUS_EVENT) {
       try {
-        onStatus(getStatus());
+        int status = getStatus();
+        onStatus(status);
+        if (status == MqttStatusCode.CONNECTED) {
+          onConnect();
+        }
       } catch (EWException e) {
         // Create human-readable exception explanation and call onError().
         String exceptionMsg = "Unable to read the status code from an MQTT status change event!";
