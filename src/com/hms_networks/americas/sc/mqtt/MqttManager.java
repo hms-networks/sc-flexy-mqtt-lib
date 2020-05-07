@@ -98,6 +98,11 @@ public abstract class MqttManager extends MqttClient {
     }
   }
 
+  /** Disconnects and ends the MQTT connection */
+  public void disconnect() {
+    close();
+  }
+
   /**
    * Configures the MQTT client to use the default port for non-secure MQTT connections.
    *
