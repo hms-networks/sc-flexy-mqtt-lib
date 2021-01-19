@@ -75,7 +75,7 @@ public abstract class MqttManager extends MqttClient {
    * @param qos MQTT quality of service
    * @param retain if the message should be retained by MQTT broker for future clients
    * @throws EWException Ewon exception - check Ewon events file for details
-   * @throws UnsupportedEncodingsException character encoding is not supported
+   * @throws UnsupportedEncodingException character encoding is not supported
    */
   public void mqttPublish(String topic, String payload, int qos, boolean retain)
       throws EWException, UnsupportedEncodingException {
