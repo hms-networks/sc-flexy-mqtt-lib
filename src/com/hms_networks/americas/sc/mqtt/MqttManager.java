@@ -3,6 +3,7 @@ package com.hms_networks.americas.sc.mqtt;
 import com.ewon.ewonitf.EWException;
 import com.ewon.ewonitf.MqttClient;
 import com.ewon.ewonitf.MqttMessage;
+import java.io.UnsupportedEncodingException;
 
 /**
  * A helper class for managing MQTT connections and their properties/configuration.
@@ -26,6 +27,15 @@ public abstract class MqttManager extends MqttClient {
   private boolean mqttThreadRun = true;
 
   /**
+   * Boolean flag to enable UTF8 string conversion. Will enable non-ASCII characters, but decreases
+   * performance by a significant amount. Defaults to false, and can be set by constructor.
+   */
+  private boolean mqttUtf8Convert = false;
+
+  /** UTF-8 charset name */
+  private static final String UTF_8 = "UTF-8";
+
+  /**
    * Main constructor for MQTT manager class. Required specified MQTT Client ID and MQTT Broker URL.
    *
    * @param mqttId MQTT client ID
@@ -40,6 +50,43 @@ public abstract class MqttManager extends MqttClient {
     setLogLevel(MqttConstants.MQTT_LOG_LEVEL_OPTION_DEFAULT);
     setKeepAliveSecs(MqttConstants.MQTT_KEEP_ALIVE_OPTION_DEFAULT);
     setProtocolVersion(MqttConstants.MQTT_PROTOCOL_VERSION_OPTION_DEFAULT);
+  }
+
+  /**
+   * Additional constructor for MqttManager class. Required parameters MQTT Client ID, MQTT Broker
+   * URL and boolean to enable UTF-8 conversion of payload. UTF-8 is recommended when tag names or
+   * tag values may have non-ASCII values.
+   *
+   * @param mqttId MQTT client ID
+   * @param mqttHost MQTT broker URL
+   * @param enableUtf8 enable support for UTF-8 strings, necessary for non-ASCII characters
+   * @throws Exception if unable to create MQTT client
+   */
+  public MqttManager(String mqttId, String mqttHost, boolean enableUtf8) throws Exception {
+    this(mqttId, mqttHost);
+    this.mqttUtf8Convert = enableUtf8;
+  }
+
+  /**
+   * Publish an MQTT message. This method will first create the MqttMessage and then publish it.
+   *
+   * @param topic MQTT topic
+   * @param payload MQTT payload
+   * @param qos MQTT quality of service
+   * @param retain if the message should be retained by MQTT broker for future clients
+   * @throws EWException Ewon exception - check Ewon events file for details
+   * @throws UnsupportedEncodingsException character encoding is not supported
+   */
+  public void mqttPublish(String topic, String payload, int qos, boolean retain)
+      throws EWException, UnsupportedEncodingException {
+    MqttMessage mqttMessage;
+    if (mqttUtf8Convert) {
+      byte[] payloadUtf8Bytes = payload.getBytes(UTF_8);
+      mqttMessage = new MqttMessage(topic, payloadUtf8Bytes);
+    } else {
+      mqttMessage = new MqttMessage(topic, payload);
+    }
+    publish(mqttMessage, qos, retain);
   }
 
   /**
