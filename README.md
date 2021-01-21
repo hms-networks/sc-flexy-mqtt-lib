@@ -17,7 +17,7 @@ A library for creating and managing MQTT connections from Ewon Flexy.
 
 ## [Developer Documentation](#table-of-contents)
 
-Developer documentation is available in Javadoc format at [https://hms-networks.github.io/sc-flexy-mqtt-lib/index.html](https://hms-networks.github.io/sc-flexy-mqtt-lib/index.html).
+Developer documentation is available in Javadoc format found in the release package [https://github.com/hms-networks/sc-flexy-mqtt-lib/releases](https://github.com/hms-networks/sc-flexy-mqtt-lib/releases).
 
 ## [Dependencies](#table-of-contents)
 None
